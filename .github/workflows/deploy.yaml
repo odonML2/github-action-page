@@ -5,7 +5,15 @@ on: push
 jobs:
   first-job:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
     steps:
+      - name: install redis cli
+        run: sido apt-get update -y && apt-get install redis-tools -y
+
       - name: print var
         run: echo ${{ secrets.TOKEN_SECRET }}
       - name: setup
