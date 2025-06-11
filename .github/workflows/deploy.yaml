@@ -12,7 +12,10 @@ jobs:
           - 6379:6379
     steps:
       - name: install redis cli
-        run: sido apt-get update -y && apt-get install redis-tools -y
+        run: sudo apt-get update -y && sudo apt-get install redis-tools -y
+
+      - name: test redis
+        run: redis-cli -h localhost -p 6379 ping
 
       - name: print var
         run: echo ${{ secrets.TOKEN_SECRET }}
