@@ -1,0 +1,10 @@
+name: deploy
+
+on: push
+
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print var
+        run: echo ${{ secrets.TOKEN_SECRET }}
