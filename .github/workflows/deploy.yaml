@@ -5,6 +5,7 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    # existen los servicios Definir que son
     services:
       redis:
         image: redis
@@ -16,7 +17,7 @@ jobs:
 
       - name: test redis
         run: redis-cli -h localhost -p 6379 ping
-
+        # los secretos en github no son visibles realizar definicion
       - name: print var
         run: echo ${{ secrets.TOKEN_SECRET }}
 
@@ -33,8 +34,9 @@ jobs:
 
       - name: run test
         run: npm run test
-      #investigar estas funciones success / always / failure
 
+      #investigar estas funciones success / always / failure
+      # desglosar para que sirve esto
       - name: upload artifact of pages
         uses: actions/upload-pages-artifact@v3
         with:
@@ -44,15 +46,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
+    # dar definicion de esto
     permissions:
       pages: write
       id-token: write
-
+    # dar definicion de esto
     environment:
       name: github-pages
       url: ${{ steps.deployment-pages.outputs.page_url}}
-
+    # dar definicion de esto
     steps:
       - name: deploy
         id: deployment-pages
         uses: actions/deploy-pages@v4
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: notify to slack
+        uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK }}
+        with:
+          status: ${{ job.status }}
+          fields: repo,commit,author,job,took
