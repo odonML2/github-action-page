@@ -43,6 +43,7 @@ jobs:
       #investigar estas funciones success / always / failure
       # desglosar para que sirve esto
       - name: upload artifact of pages
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node == 18 }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: public/
